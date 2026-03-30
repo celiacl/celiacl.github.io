@@ -290,6 +290,14 @@ function renderEntities(text) {
     });
 }
 
+function detectLang(text) {
+    const esWords = new Set('el la los las un una de del en y que por para es con su al lo como más esta este esta pero se ha son tiene muy todo también puede ser hay cuando donde'.split(' '));
+    const words = text.toLowerCase().match(/[\wáéíóúüñ]+/g) || [];
+    let esCount = 0;
+    words.forEach(w => { if (esWords.has(w)) esCount++; });
+    return esCount / words.length > 0.12 ? 'ES' : 'EN';
+}
+
 function renderStats(text) {
     const c = document.getElementById('statsContainer');
     const words = text.match(/[\wáéíóúüñ]+/g) || [];
@@ -297,6 +305,7 @@ function renderStats(text) {
     const unique = new Set(words.map(w => w.toLowerCase())).size;
     const avg = words.length ? (words.reduce((s, w) => s + w.length, 0) / words.length).toFixed(1) : 0;
     const ld = words.length ? ((unique / words.length) * 100).toFixed(0) : 0;
+    const lang = detectLang(text);
     const L = currentLang === 'es';
     const stats = [
         { v: words.length, l: L ? 'Palabras' : 'Words' },
@@ -305,8 +314,20 @@ function renderStats(text) {
         { v: avg, l: L ? 'Long. media' : 'Avg. length' },
         { v: unique, l: L ? 'Únicas' : 'Unique' },
         { v: `${ld}%`, l: L ? 'Diversidad léx.' : 'Lexical div.' },
+        { v: lang, l: L ? 'Idioma det.' : 'Lang. det.' },
     ];
-    c.innerHTML = stats.map(s => `<div class="stat-mini"><span class="stat-mini-number">${s.v}</span><span class="stat-mini-label">${s.l}</span></div>`).join('');
+
+    // Word frequency top 5
+    const freq = {};
+    words.forEach(w => { const lw = w.toLowerCase(); if (!STOP_WORDS.has(lw) && lw.length > 2) freq[lw] = (freq[lw] || 0) + 1; });
+    const top5 = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const maxFreq = top5.length ? top5[0][1] : 1;
+
+    const freqHTML = top5.length ? `<div class="freq-chart">${top5.map(([word, count]) =>
+        `<div class="freq-row"><span class="freq-word">${word}</span><div class="freq-bar-bg"><div class="freq-bar" style="width:${(count / maxFreq) * 100}%"></div></div><span class="freq-count">${count}</span></div>`
+    ).join('')}</div>` : '';
+
+    c.innerHTML = stats.map(s => `<div class="stat-mini"><span class="stat-mini-number">${s.v}</span><span class="stat-mini-label">${s.l}</span></div>`).join('') + freqHTML;
 }
 
 // ================================================================
@@ -318,9 +339,9 @@ const CLUSTER_DEFS = {
     ai:    { cx: 0.62, cy: 0.30, color: '#a78bfa', label: 'AI / ML',
              words: 'machine learning deep neural network model training inference prediction classification regression supervised unsupervised gradient optimization loss accuracy epoch feature layer perceptron'.split(' ') },
     nlp:   { cx: 0.78, cy: 0.55, color: '#f472b6', label: 'NLP',
-             words: 'language natural processing text token tokenization embedding transformer attention BERT GPT sentiment NER translation summarization generation prompt corpus vocabulary semantic parsing'.split(' ') },
+             words: 'language natural processing text token tokenization embedding transformer attention BERT GPT sentiment NER translation summarization generation prompt corpus vocabulary semantic parsing scraping agent multi-agent document context'.split(' ') },
     data:  { cx: 0.35, cy: 0.65, color: '#22d3ee', label: 'Data',
-             words: 'data science engineering SQL database pipeline ETL warehouse lake analytics visualization statistics pandas numpy spark dataframe query schema'.split(' ') },
+             words: 'data science engineering SQL database pipeline ETL warehouse lake analytics visualization statistics pandas numpy spark dataframe query schema pricing prediction volumetric logistics optimization forecasting'.split(' ') },
     cyber: { cx: 0.20, cy: 0.30, color: '#f87171', label: 'Security',
              words: 'security cybersecurity risk vulnerability threat attack encryption firewall compliance NIST ISO cloud infrastructure monitoring audit FAIR privacy'.split(' ') },
     med:   { cx: 0.15, cy: 0.70, color: '#34d399', label: 'Medical',
@@ -497,7 +518,11 @@ const CORPUS = [
     { title: 'PhD: AI for Cloud Cybersecurity', tags: ['PhD', 'GenAI', 'Cloud'],
       text: 'Doctoral thesis industrial PhD generative AI security models cloud computing architectures cybersecurity strategies risk translation technical economic operational FAIR ISO NIST machine learning NLP probabilistic' },
     { title: 'AI Engineer @ Cloud Levante', tags: ['Industry', 'MLOps', 'Cloud'],
-      text: 'AI engineer machine learning computer vision datalakes big data governance ETL cognitive systems RAG vector databases LLM embedding reranking finetuning deployment production docker kubernetes AWS Azure IONOS' },
+      text: 'AI engineer machine learning computer vision datalakes big data governance ETL cognitive systems RAG vector databases LLM embedding reranking finetuning deployment production docker kubernetes AWS Azure IONOS predictive pricing volumetric logistics optimization route translation multi-agent scraping' },
+    { title: 'Predictive & Optimization Systems', tags: ['ML', 'Optimization', 'Industry'],
+      text: 'Predictive systems pricing price optimization volumetric logistics route optimization machine learning regression forecasting demand estimation cost reduction efficiency supply chain planning scheduling' },
+    { title: 'Advanced Document Translation & Multi-Agent Scraping', tags: ['NLP', 'LLMs', 'Agents'],
+      text: 'Advanced translation complex documents context-aware multilingual NLP transformer LLM multi-agent scraping automated data extraction web crawling intelligent agents orchestration pipeline' },
     { title: 'NLP University Lecturer @ UNIR', tags: ['Teaching', 'NLP', 'Academia'],
       text: 'University lecturer natural language processing NLP master artificial intelligence teaching grading exams forum management student support thesis tutor cloud computing AI UNIR' },
     { title: 'Doctoral Researcher @ Universidad de Alicante', tags: ['Research', 'AI', 'Security'],
