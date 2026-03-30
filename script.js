@@ -79,7 +79,40 @@ document.getElementById('langToggle').addEventListener('click', () => {
 
 // ===== Nav, Menu, Scroll =====
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+const scrollProgress = document.getElementById('scrollProgress');
+const backToTopBtn = document.getElementById('backToTop');
+
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    nav.classList.toggle('scrolled', scrollY > 50);
+
+    // Scroll progress bar
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) scrollProgress.style.width = `${(scrollY / docHeight) * 100}%`;
+
+    // Back to top visibility
+    backToTopBtn.classList.toggle('visible', scrollY > 600);
+
+    // Active nav link
+    const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+    let current = '';
+    document.querySelectorAll('.section, .hero').forEach(sec => {
+        const top = sec.offsetTop - 120;
+        if (scrollY >= top) current = sec.getAttribute('id') || '';
+    });
+    navAnchors.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+    });
+
+    // Subtle hero parallax
+    const hero = document.querySelector('.hero-content');
+    if (hero && scrollY < window.innerHeight) {
+        hero.style.transform = `translateY(${scrollY * 0.15}px)`;
+        hero.style.opacity = 1 - scrollY / (window.innerHeight * 0.8);
+    }
+});
+
+backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 const menuBtn = document.getElementById('menuBtn');
 const navLinks = document.querySelector('.nav-links');
@@ -109,6 +142,47 @@ const cardObs = new IntersectionObserver(entries => {
     });
 }, { threshold: 0.05 });
 sections.forEach(s => cardObs.observe(s));
+
+// ===== Animated Counters =====
+const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.querySelectorAll('.stat-number').forEach(el => {
+                const raw = el.textContent.trim();
+                const suffix = raw.replace(/[\d.]/g, '');
+                const target = parseFloat(raw);
+                if (isNaN(target)) return;
+                let current = 0;
+                const step = target / 40;
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) { current = target; clearInterval(timer); }
+                    el.textContent = (Number.isInteger(target) ? Math.round(current) : current.toFixed(1)) + suffix;
+                }, 30);
+            });
+            counterObs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.3 });
+const aboutSection = document.getElementById('about');
+if (aboutSection) counterObs.observe(aboutSection);
+
+// ===== Skill Bars Animation =====
+const skillBarObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.querySelectorAll('.skill-bar-fill').forEach((bar, i) => {
+                setTimeout(() => {
+                    bar.style.width = bar.dataset.level + '%';
+                    bar.classList.add('animated');
+                }, i * 150);
+            });
+            skillBarObs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.2 });
+const skillsSection = document.getElementById('skills');
+if (skillsSection) skillBarObs.observe(skillsSection);
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => { const t = document.querySelector(a.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); } });
