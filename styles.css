@@ -1513,6 +1513,10 @@ a {
 .skill-cloud .skill-bar-fill { background: linear-gradient(90deg, #f97316, #fb923c); }
 .skill-cloud .skill-chip:hover { border-color: var(--orange); background: rgba(249, 115, 22, 0.15); box-shadow: 0 6px 20px rgba(249, 115, 22, 0.15); }
 
+.skill-teach h3 { color: var(--pink); }
+.skill-teach .skill-bar-fill { background: linear-gradient(90deg, #ec4899, #f472b6); }
+.skill-teach .skill-chip:hover { border-color: var(--pink); background: rgba(236, 72, 153, 0.15); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15); }
+
 .skill-langs h3 { color: var(--green); }
 .skill-langs .skill-bar-fill { background: linear-gradient(90deg, #10b981, #34d399); }
 .skill-langs .skill-chip:hover { border-color: var(--green); background: rgba(16, 185, 129, 0.15); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15); }
