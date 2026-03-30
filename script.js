@@ -250,8 +250,47 @@ document.querySelectorAll('.lab-tab').forEach(tab => {
 });
 
 // ================================================================
-//  TAB 1: NLP ANALYZER
+//  TAB 1: NLP ANALYZER — Language-aware lexicons
 // ================================================================
+
+// ---- Language detection ----
+function detectLang(text) {
+    const esInd = new Set('el la los las un una de del en y que por para es con su al lo como más esta este pero se ha son tiene muy todo también puede ser hay cuando donde cada sino otro otra esto eso'.split(' '));
+    const enInd = new Set('the a an is are was were has have had been will would could should may might can do does did this that these those with from for not but or and its their them they he she we you'.split(' '));
+    const words = text.toLowerCase().match(/[\wáéíóúüñ]+/g) || [];
+    let es = 0, en = 0;
+    words.forEach(w => { if (esInd.has(w)) es++; if (enInd.has(w)) en++; });
+    return es >= en ? 'ES' : 'EN';
+}
+
+// ---- Language-specific lexicons ----
+const LEX = {
+    stop: {
+        ES: new Set('el la los las un una unos unas de del en y que a con por para es se no al lo como su sus más esta este estos estas pero ya también muy todo sobre entre hasta desde donde cuando ese esa cada sino tanto ni otro otra nada fue ser estar haber tener hacer poder decir ir ver dar saber querer aquí ahí hay sido está son han era cual'.split(' ')),
+        EN: new Set('the a an in on of and to for is it with that this from are was has have had be been but or at by not do does did will would could should may might shall can its if than more also very each both few some any many much own other another so only most just already still even back how all every between through during before after above below about into'.split(' '))
+    },
+    verbs: {
+        ES: new Set('es ha han ser estar tiene tener hacer trabajar buscar construir combinar diseñar implementar integrar desarrollar enseñar utilizar mejorar presentar aplicar crear analizar generar transformar optimizar investigar publicar desplegar entrenar procesar detectar clasificar predecir evaluar conectar automatizar resolver permite produce propone demuestra obtiene incluye describe utiliza mejora aplica presenta genera reduce aumenta facilita garantiza gestiona muestra emplea combina aborda estudia examina explora identifica proporciona contribuye revolucionado encanta'.split(' ')),
+        EN: new Set('is are was were has have had be been build work approach combine design implement develop teach create deploy train process analyze generate transform achieve require use improve present apply research publish detect classify predict evaluate connect automate resolve optimize integrate construct demonstrate include describe produce propose obtain show reduce increase facilitate manage employ explore identify provide contribute address examine study leverage enable extract translate monitor'.split(' '))
+    },
+    adjs: {
+        ES: new Set('nuevo nueva nuevos nuevas increíble mejor grande bueno buena excelente natural automático automática interactivo interactiva cognitivo cognitiva técnico técnica digital avanzado avanzada eficiente escalable robusto robusta explicable predictivo predictiva generativo generativa semántico semántica probabilístico probabilística inteligente complejo compleja óptimo óptima innovador innovadora científico científica doctoral universitario universitaria práctico práctica multiagéntico'.split(' ')),
+        EN: new Set('new great best better explainable technical economic incredible automatic interactive cognitive digital advanced efficient scalable robust predictive generative semantic probabilistic intelligent complex optimal innovative scientific doctoral automated deep clinical practical multilingual large real-time comprehensive powerful effective accurate sophisticated'.split(' '))
+    },
+    positive: {
+        ES: new Set('bueno buena genial excelente increíble maravilloso maravillosa fantástico fantástica amor feliz hermoso hermosa mejor bien perfecto perfecta encanta innovar pasión apasiona éxito exitoso exitosa orgulloso orgullosa orgullo inspirar inspirador brillante eficiente escalable creativo creativa revolucionado prometedor prometedora optimizar óptimo óptima logro avance progreso solución ventaja beneficio calidad fiable robusto impresionante notable destacado sobresaliente magnífico extraordinario estupendo positivo potente útil valioso clave importante fascinante'.split(' ')),
+        EN: new Set('good great excellent amazing wonderful fantastic love happy beautiful best perfect innovative passionate success proud inspiring brilliant efficient scalable creative revolutionary promising excited pleasure impressive improve better outstanding remarkable exceptional achievement progress solution advantage benefit quality reliable robust notable magnificent extraordinary superb powerful effective accurate positive valuable important key fascinating useful helpful'.split(' '))
+    },
+    negative: {
+        ES: new Set('malo mala terrible horrible peor odio triste feo fea pobre difícil problema error riesgo vulnerabilidad amenaza fallo fracaso peligro peligroso crítico ataque brecha malicioso inseguro deficiente débil obsoleto costoso lento ineficiente complicado negativo dañino'.split(' ')),
+        EN: new Set('bad terrible horrible awful worst hate sad ugly poor difficult problem error risk vulnerability threat failure danger dangerous critical attack breach malicious insecure deficient weak obsolete costly slow inefficient complicated flawed broken negative harmful'.split(' '))
+    }
+};
+
+// Merged stop words for entity detection (need both)
+const ALL_STOP = new Set([...LEX.stop.ES, ...LEX.stop.EN]);
+
+// ---- Event listeners ----
 document.getElementById('nlpAnalyze').addEventListener('click', analyzeText);
 document.querySelectorAll('.nlp-example-btn').forEach(btn => {
     btn.addEventListener('click', () => { document.getElementById('nlpInput').value = btn.dataset.text; analyzeText(); });
@@ -261,44 +300,41 @@ document.getElementById('nlpInput').addEventListener('keydown', e => { if (e.key
 function analyzeText() {
     const text = document.getElementById('nlpInput').value.trim();
     if (!text) return;
+    const lang = detectLang(text);
     document.getElementById('nlpResults').classList.add('active');
-    renderTokens(text); renderSentiment(text); renderEntities(text); renderStats(text);
+    renderTokens(text, lang); renderSentiment(text, lang); renderEntities(text, lang); renderStats(text, lang);
 }
 
-const STOP_WORDS = new Set('el la los las un una de del en y que a con por para es se no al lo como su the a an in on of and to for is it with that this from are was has have had be been but or at by not do does'.split(' '));
-const VERBS = new Set('es ha han ser tiene hacer trabajar buscar construir combinar diseñar implementar integrar desarrollar enseñar is are was has have require achieved build work love approach combine design implement develop teach create deploy train process analyze generate transform revolucionado encanta utiliza mejora aplicada presenta'.split(' '));
-const ADJS = new Set('nuevo nueva increíble mejor grande bueno excelente natural automático automática interactivo cognitivo new great best better explainable technical economic incredible automatic interactive cognitive digital'.split(' '));
-
-function classifyToken(w) {
+// ---- POS classification (language-aware) ----
+function classifyToken(w, lang) {
     const l = w.toLowerCase();
     if (/^\d+[\.,]?\d*%?$/.test(w)) return 'number';
-    if (w[0] === w[0].toUpperCase() && w.length > 1 && !STOP_WORDS.has(l)) return 'entity';
-    if (VERBS.has(l)) return 'verb';
-    if (ADJS.has(l)) return 'adj';
-    if (STOP_WORDS.has(l)) return 'other';
+    if (w[0] === w[0].toUpperCase() && w.length > 1 && !ALL_STOP.has(l)) return 'entity';
+    if (LEX.verbs[lang].has(l)) return 'verb';
+    if (LEX.adjs[lang].has(l)) return 'adj';
+    if (LEX.stop[lang].has(l)) return 'other';
     return l.length > 5 ? 'noun' : 'other';
 }
 
-function renderTokens(text) {
+function renderTokens(text, lang) {
     const c = document.getElementById('tokensContainer');
     const words = text.match(/[\wáéíóúüñÁÉÍÓÚÜÑ]+|[^\s\wáéíóúüñÁÉÍÓÚÜÑ]+/g) || [];
     c.innerHTML = '';
     words.forEach((w, i) => {
         const s = document.createElement('span');
-        s.className = `nlp-token ${/^[^\wáéíóúüñ]+$/i.test(w) ? 'other' : classifyToken(w)}`;
+        s.className = `nlp-token ${/^[^\wáéíóúüñ]+$/i.test(w) ? 'other' : classifyToken(w, lang)}`;
         s.textContent = w;
         s.style.animationDelay = `${i * 0.03}s`;
         c.appendChild(s);
     });
 }
 
-const POS_W = new Set('bueno buena genial excelente increíble maravilloso fantástico amor feliz hermoso mejor bien perfecto encanta innovar pasión apasiona éxito orgulloso orgullo inspirar brillante eficiente escalable creativo revolucionado prometedor optimizar good great excellent amazing wonderful fantastic love happy beautiful best perfect innovative passionate success proud inspiring brilliant efficient scalable creative revolutionary promising excited pleasure impressive improve better outstanding remarkable exceptional'.split(' '));
-const NEG_W = new Set('malo mala terrible horrible peor odio triste feo pobre difícil problema error riesgo vulnerabilidad amenaza bad terrible horrible awful worst hate sad ugly poor difficult problem error risk vulnerability threat failure danger critical attack breach malicious'.split(' '));
-
-function renderSentiment(text) {
+// ---- Sentiment (language-aware) ----
+function renderSentiment(text, lang) {
     const words = text.toLowerCase().match(/[\wáéíóúüñ]+/g) || [];
+    const posSet = LEX.positive[lang], negSet = LEX.negative[lang];
     let pos = 0, neg = 0;
-    words.forEach(w => { if (POS_W.has(w)) pos++; if (NEG_W.has(w)) neg++; });
+    words.forEach(w => { if (posSet.has(w)) pos++; if (negSet.has(w)) neg++; });
     const total = pos + neg || 1, score = (pos - neg) / total, norm = Math.round((score + 1) * 50);
     const emoji = document.getElementById('sentimentEmoji');
     const bar = document.getElementById('sentimentBar');
@@ -312,20 +348,22 @@ function renderSentiment(text) {
     requestAnimationFrame(() => { bar.style.width = `${Math.max(norm, 8)}%`; bar.style.background = color; });
 }
 
-const K_ORGS = new Set(['google','openai','microsoft','amazon','aws','azure','meta','nvidia','tesla','apple','ibm','unir','ionos','scitepress','mdpi','cloud levante','universidad','university']);
-const K_TECH = new Set(['python','tensorflow','pytorch','docker','kubernetes','spark','sql','javascript','java','matlab','transformers','bert','gpt','nlp','ml','ai','ia','rag','llm','llms','deep learning','machine learning','nist','fair','iso']);
+// ---- NER (language-agnostic entities + language-aware stop filter) ----
+const K_ORGS = new Set(['google','openai','microsoft','amazon','aws','azure','meta','nvidia','tesla','apple','ibm','unir','ionos','scitepress','mdpi','cloud levante','universidad','university','alicante','hugging face','anthropic']);
+const K_TECH = new Set(['python','tensorflow','pytorch','docker','kubernetes','spark','sql','javascript','java','matlab','transformers','bert','gpt','nlp','ml','ai','ia','rag','llm','llms','deep learning','machine learning','nist','fair','iso','rouge','pddl','dicom','onnx','spacy','xai']);
 
-function renderEntities(text) {
+function renderEntities(text, lang) {
     const c = document.getElementById('nerContainer');
     c.innerHTML = '';
     const found = new Map(), lt = text.toLowerCase();
     K_ORGS.forEach(t => { if (lt.includes(t)) found.set(t, 'ORG'); });
     K_TECH.forEach(t => { if (lt.includes(t)) found.set(t, 'TECH'); });
+    const stopForLang = LEX.stop[lang];
     text.split(/[.!?]+/).forEach(s => {
         s.trim().split(/\s+/).forEach((w, i) => {
             const cl = w.replace(/[^a-záéíóúüñA-ZÁÉÍÓÚÜÑ]/g, '');
             if (cl.length < 2) return;
-            if (i > 0 && cl[0] === cl[0].toUpperCase() && cl[0] !== cl[0].toLowerCase() && !STOP_WORDS.has(cl.toLowerCase()) && !found.has(cl.toLowerCase()))
+            if (i > 0 && cl[0] === cl[0].toUpperCase() && cl[0] !== cl[0].toLowerCase() && !stopForLang.has(cl.toLowerCase()) && !found.has(cl.toLowerCase()))
                 found.set(cl, 'MISC');
         });
     });
@@ -340,22 +378,14 @@ function renderEntities(text) {
     });
 }
 
-function detectLang(text) {
-    const esWords = new Set('el la los las un una de del en y que por para es con su al lo como más esta este esta pero se ha son tiene muy todo también puede ser hay cuando donde'.split(' '));
-    const words = text.toLowerCase().match(/[\wáéíóúüñ]+/g) || [];
-    let esCount = 0;
-    words.forEach(w => { if (esWords.has(w)) esCount++; });
-    return esCount / words.length > 0.12 ? 'ES' : 'EN';
-}
-
-function renderStats(text) {
+// ---- Stats (language-aware) ----
+function renderStats(text, lang) {
     const c = document.getElementById('statsContainer');
     const words = text.match(/[\wáéíóúüñ]+/g) || [];
     const sents = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
     const unique = new Set(words.map(w => w.toLowerCase())).size;
     const avg = words.length ? (words.reduce((s, w) => s + w.length, 0) / words.length).toFixed(1) : 0;
     const ld = words.length ? ((unique / words.length) * 100).toFixed(0) : 0;
-    const lang = detectLang(text);
     const L = currentLang === 'es';
     const stats = [
         { v: words.length, l: L ? 'Palabras' : 'Words' },
@@ -367,9 +397,9 @@ function renderStats(text) {
         { v: lang, l: L ? 'Idioma det.' : 'Lang. det.' },
     ];
 
-    // Word frequency top 5
+    const stopForFreq = LEX.stop[lang];
     const freq = {};
-    words.forEach(w => { const lw = w.toLowerCase(); if (!STOP_WORDS.has(lw) && lw.length > 2) freq[lw] = (freq[lw] || 0) + 1; });
+    words.forEach(w => { const lw = w.toLowerCase(); if (!stopForFreq.has(lw) && lw.length > 2) freq[lw] = (freq[lw] || 0) + 1; });
     const top5 = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 5);
     const maxFreq = top5.length ? top5[0][1] : 1;
 
