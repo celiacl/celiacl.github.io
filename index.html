@@ -22,6 +22,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
@@ -515,6 +518,18 @@
             <p class="footer-copy">&copy; 2026 Celia Cabello Collado. <span data-es="Hecho con 💜 y muchos datos" data-en="Made with 💜 and lots of data">Hecho con 💜 y muchos datos</span></p>
         </div>
     </footer>
+
+    <!-- Easter Egg Terminal -->
+    <div class="terminal-overlay" id="terminalOverlay">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dots"><span class="tdot-red"></span><span class="tdot-yellow"></span><span class="tdot-green"></span></div>
+                <span class="terminal-title">celia@portfolio ~ %</span>
+                <button class="terminal-close" id="terminalClose">&times;</button>
+            </div>
+            <div class="terminal-body" id="terminalBody"></div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

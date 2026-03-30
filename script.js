@@ -1,19 +1,34 @@
-// ===== Animated Hero Grid =====
+// ===== Interactive Particle Network =====
 (function() {
     const c = document.getElementById('heroGrid');
     if (!c) return;
     const ctx = c.getContext('2d');
-    let w, h, cols, rows, mx = -1, my = -1;
-    const gap = 40;
+    let w, h, mx = -1, my = -1;
+    const particles = [];
+    const COUNT = 80;
+    const CONN_DIST = 150;
+    const MOUSE_DIST = 200;
 
     function resize() {
-        w = c.width = c.parentElement.offsetWidth;
-        h = c.height = c.parentElement.offsetHeight;
-        cols = Math.ceil(w / gap) + 1;
-        rows = Math.ceil(h / gap) + 1;
+        w = c.width = c.parentElement.offsetWidth || 1200;
+        h = c.height = c.parentElement.offsetHeight || 800;
+        particles.forEach(p => {
+            if (p.x > w) p.x = Math.random() * w;
+            if (p.y > h) p.y = Math.random() * h;
+        });
     }
     resize();
     window.addEventListener('resize', resize);
+
+    const colors = ['#a78bfa','#f472b6','#22d3ee','#818cf8'];
+    for (let i = 0; i < COUNT; i++) {
+        particles.push({
+            x: Math.random() * w, y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+            r: Math.random() * 2 + 1,
+            color: colors[Math.floor(Math.random() * colors.length)]
+        });
+    }
 
     document.querySelector('.hero').addEventListener('mousemove', e => {
         const r = c.getBoundingClientRect();
@@ -24,23 +39,58 @@
 
     function draw() {
         ctx.clearRect(0, 0, w, h);
-        for (let i = 0; i < cols; i++) {
-            for (let j = 0; j < rows; j++) {
-                const x = i * gap, y = j * gap;
-                let dist = mx >= 0 ? Math.hypot(x - mx, y - my) : 999;
-                let alpha = Math.max(0.04, 0.35 - dist / 350);
-                let size = dist < 200 ? 2 + (1 - dist / 200) * 2.5 : 2;
-                ctx.beginPath();
-                ctx.arc(x, y, size, 0, Math.PI * 2);
-                if (dist < 160) {
-                    const hue = 270 + (dist / 160) * 60;
-                    ctx.fillStyle = `hsla(${hue}, 80%, 70%, ${alpha})`;
-                } else {
-                    ctx.fillStyle = `rgba(148, 163, 184, ${alpha})`;
+
+        particles.forEach(p => {
+            if (mx >= 0) {
+                const dx = p.x - mx, dy = p.y - my;
+                const dist = Math.hypot(dx, dy);
+                if (dist < MOUSE_DIST && dist > 0) {
+                    const force = (MOUSE_DIST - dist) / MOUSE_DIST * 0.03;
+                    p.vx += (dx / dist) * force;
+                    p.vy += (dy / dist) * force;
                 }
-                ctx.fill();
+            }
+            p.vx *= 0.99; p.vy *= 0.99;
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+            if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = 0.6;
+            ctx.fill();
+        });
+
+        ctx.globalAlpha = 1;
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+                if (dist < CONN_DIST) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(167,139,250,${(1 - dist / CONN_DIST) * 0.15})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
             }
         }
+
+        if (mx >= 0) {
+            particles.forEach(p => {
+                const dist = Math.hypot(p.x - mx, p.y - my);
+                if (dist < MOUSE_DIST) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(mx, my);
+                    ctx.strokeStyle = `rgba(244,114,182,${(1 - dist / MOUSE_DIST) * 0.3})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            });
+        }
+
         requestAnimationFrame(draw);
     }
     draw();
@@ -624,3 +674,165 @@ function runSemanticSearch() {
         </div>`;
     }).join('');
 }
+
+// ================================================================
+//  FEATURE: 3D TILT EFFECT ON CARDS
+// ================================================================
+document.querySelectorAll('.timeline-card, .edu-card, .talk-card, .pub-card, .stat-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const rotateX = ((y - cy) / cy) * -8;
+        const rotateY = ((x - cx) / cx) * 8;
+        card.style.transition = 'none';
+        card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        card.style.transform = 'perspective(600px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+    });
+});
+
+// ================================================================
+//  FEATURE: CURSOR GLOW FOLLOWING MOUSE
+// ================================================================
+(function() {
+    const glow = document.getElementById('cursorGlow');
+    if (!glow) return;
+    let gx = 0, gy = 0, cx = 0, cy = 0, active = false;
+
+    document.addEventListener('mousemove', e => {
+        gx = e.clientX; gy = e.clientY;
+        if (!active) { active = true; glow.classList.add('active'); cx = gx; cy = gy; }
+    });
+    document.addEventListener('mouseleave', () => { active = false; glow.classList.remove('active'); });
+
+    function lerp() {
+        cx += (gx - cx) * 0.12;
+        cy += (gy - cy) * 0.12;
+        glow.style.left = cx + 'px';
+        glow.style.top = cy + 'px';
+        requestAnimationFrame(lerp);
+    }
+    lerp();
+})();
+
+// ================================================================
+//  FEATURE: MAGNETIC HERO BUTTONS
+// ================================================================
+document.querySelectorAll('.hero-cta .btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+        const rect = btn.getBoundingClientRect();
+        const dx = e.clientX - (rect.left + rect.width / 2);
+        const dy = e.clientY - (rect.top + rect.height / 2);
+        btn.style.transition = 'none';
+        btn.style.transform = `translate(${dx * 0.35}px, ${dy * 0.35}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease';
+        btn.style.transform = 'translate(0, 0)';
+    });
+});
+
+// ================================================================
+//  FEATURE: SCRAMBLE / DECODE SECTION TITLES
+// ================================================================
+(function() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*<>/';
+
+    function scramble(el) {
+        const original = el.textContent;
+        const len = original.length;
+        let iteration = 0;
+        const interval = setInterval(() => {
+            el.textContent = original.split('').map((ch, i) => {
+                if (ch === ' ') return ' ';
+                if (i < iteration) return original[i];
+                return chars[Math.floor(Math.random() * chars.length)];
+            }).join('');
+            iteration += 0.5;
+            if (iteration >= len) { el.textContent = original; clearInterval(interval); }
+        }, 30);
+    }
+
+    const titleObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { scramble(e.target); titleObs.unobserve(e.target); }
+        });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.section-title').forEach(t => titleObs.observe(t));
+})();
+
+// ================================================================
+//  FEATURE: EASTER EGG — TRIPLE-CLICK LOGO → MINI TERMINAL
+// ================================================================
+(function() {
+    let clicks = 0, timer;
+    const logo = document.querySelector('.nav-logo');
+    if (!logo) return;
+
+    logo.addEventListener('click', e => {
+        e.preventDefault();
+        clicks++;
+        clearTimeout(timer);
+        timer = setTimeout(() => { clicks = 0; }, 600);
+        if (clicks >= 3) { clicks = 0; openTerminal(); }
+    });
+
+    function openTerminal() {
+        const overlay = document.getElementById('terminalOverlay');
+        const body = document.getElementById('terminalBody');
+        overlay.classList.add('active');
+        body.innerHTML = '';
+
+        const cmds = [
+            { cmd: 'whoami', out: 'Celia Cabello Collado' },
+            { cmd: 'cat roles.txt', out: 'AI Engineer @ Cloud Levante\nPhD Researcher @ Universidad de Alicante\nNLP Lecturer @ UNIR' },
+            { cmd: 'ls skills/', out: 'Python  ML  NLP  LLMs  RAG  Docker  AWS  Azure  Kubernetes  Data_Engineering' },
+            { cmd: 'cat education.json | jq .latest', out: '{\n  "degree": "PhD in Computer Engineering",\n  "university": "Universidad de Alicante",\n  "topic": "AI for Cybersecurity"\n}' },
+            { cmd: 'wc -l publications.bib', out: '2 papers published  (+1 PhD thesis in progress)' },
+            { cmd: 'echo $PASSION', out: 'Making AI accessible through teaching, research & engineering' },
+            { cmd: 'exit', out: 'Bye! Thanks for exploring :)' }
+        ];
+
+        let i = 0;
+        function typeCmd() {
+            if (i >= cmds.length) return;
+            const { cmd, out } = cmds[i];
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = '<span class="terminal-prompt">celia@portfolio ~ % </span><span class="terminal-cmd"></span>';
+            body.appendChild(line);
+            body.scrollTop = body.scrollHeight;
+
+            const span = line.querySelector('.terminal-cmd');
+            let ci = 0;
+            const typing = setInterval(() => {
+                span.textContent += cmd[ci++];
+                if (ci >= cmd.length) {
+                    clearInterval(typing);
+                    setTimeout(() => {
+                        const outEl = document.createElement('div');
+                        outEl.className = 'terminal-line terminal-output';
+                        outEl.innerHTML = out.replace(/\n/g, '<br>');
+                        body.appendChild(outEl);
+                        body.scrollTop = body.scrollHeight;
+                        i++;
+                        setTimeout(typeCmd, 500);
+                    }, 300);
+                }
+            }, 40);
+        }
+        setTimeout(typeCmd, 500);
+    }
+
+    document.getElementById('terminalClose').addEventListener('click', () => {
+        document.getElementById('terminalOverlay').classList.remove('active');
+    });
+    document.getElementById('terminalOverlay').addEventListener('click', e => {
+        if (e.target === e.currentTarget) e.currentTarget.classList.remove('active');
+    });
+})();
