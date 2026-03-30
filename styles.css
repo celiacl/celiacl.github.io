@@ -125,6 +125,35 @@ a {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    position: relative;
+}
+
+.nav-logo::after {
+    content: 'click ×3';
+    position: absolute;
+    bottom: -26px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.85);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--gray);
+    -webkit-text-fill-color: var(--gray);
+    background: var(--dark-3);
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.nav-logo:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
 }
 
 .nav-links {
