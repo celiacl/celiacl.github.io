@@ -94,7 +94,7 @@ sections.forEach(s => obs.observe(s));
 const cardObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
         if (e.isIntersecting) {
-            const cards = e.target.querySelectorAll('.timeline-card, .edu-card, .talk-card, .project-card, .skill-category, .stat-card');
+            const cards = e.target.querySelectorAll('.timeline-card, .edu-card, .talk-card, .pub-card, .skill-category, .stat-card');
             cards.forEach((card, i) => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(24px)';

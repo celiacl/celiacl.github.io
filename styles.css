@@ -361,6 +361,21 @@ a {
     transform: translateY(-2px);
 }
 
+.btn-cv::before {
+    content: none !important;
+}
+
+.btn-cv {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+.btn-cv:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.2);
+}
+
 /* ===== Scroll Indicator ===== */
 .scroll-indicator {
     position: absolute;

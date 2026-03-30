@@ -53,7 +53,7 @@
             <p class="hero-desc" data-es="Ingeniera de IA, investigadora y docente. Enfoco la IA desde una perspectiva data-driven, combinando ciencia de datos, data engineering y NLP para construir soluciones eficientes y escalables." data-en="AI Engineer, researcher and lecturer. I approach AI from a data-driven perspective, combining data science, data engineering and NLP to build efficient and scalable solutions.">Ingeniera de IA, investigadora y docente. Enfoco la IA desde una perspectiva data-driven, combinando ciencia de datos, data engineering y NLP para construir soluciones eficientes y escalables.</p>
             <div class="hero-cta">
                 <a href="#nlp-lab" class="btn btn-primary" data-es="Probar NLP Lab" data-en="Try NLP Lab">Probar NLP Lab</a>
-                <a href="#publications" class="btn btn-outline" data-es="Publicaciones" data-en="Publications">Publicaciones</a>
+                <a href="docs/cv_CeliaCabello.pdf" target="_blank" class="btn btn-outline btn-cv" data-es="Descargar CV" data-en="Download CV">Descargar CV</a>
                 <a href="#contact" class="btn btn-outline" data-es="Contacto" data-en="Contact me">Contacto</a>
             </div>
         </div>
@@ -262,7 +262,7 @@
     <section class="section section-alt" id="nlp-lab">
         <div class="container">
             <h2 class="section-title">NLP Lab</h2>
-            <p class="nlp-subtitle" data-es="Demos interactivas de Procesamiento del Lenguaje Natural" data-en="Interactive Natural Language Processing demos">Demos interactivas de Procesamiento del Lenguaje Natural</p>
+            <p class="nlp-subtitle" data-es="Como docente de NLP en el Máster de IA de la UNIR e investigadora en la Universidad de Alicante, aquí puedes explorar de forma interactiva algunas de las técnicas que enseño y aplico en mi día a día." data-en="As an NLP lecturer in UNIR's Master in AI and researcher at the University of Alicante, here you can interactively explore some of the techniques I teach and apply in my daily work.">Como docente de NLP en el Máster de IA de la UNIR e investigadora en la Universidad de Alicante, aquí puedes explorar de forma interactiva algunas de las técnicas que enseño y aplico en mi día a día.</p>
 
             <!-- Tabs -->
             <div class="lab-tabs">
@@ -273,6 +273,7 @@
 
             <!-- Tab 1: Analyzer -->
             <div class="lab-panel active" id="panel-analyzer">
+                <p class="panel-desc" data-es="Pipeline de análisis de texto como los que enseño en mis clases de NLP: tokenización, clasificación POS, análisis de sentimiento y reconocimiento de entidades (NER). Escribe cualquier texto o prueba los ejemplos." data-en="Text analysis pipeline like the ones I teach in my NLP classes: tokenization, POS classification, sentiment analysis and Named Entity Recognition (NER). Type any text or try the examples.">Pipeline de análisis de texto como los que enseño en mis clases de NLP: tokenización, clasificación POS, análisis de sentimiento y reconocimiento de entidades (NER). Escribe cualquier texto o prueba los ejemplos.</p>
                 <div class="nlp-playground">
                     <div class="nlp-input-area">
                         <textarea id="nlpInput" rows="3" placeholder="Escribe algo aquí... / Type something here..."></textarea>
@@ -313,7 +314,7 @@
 
             <!-- Tab 2: Embedding Explorer -->
             <div class="lab-panel" id="panel-embeddings">
-                <p class="panel-desc" data-es="Visualización 2D de word embeddings. Los puntos representan palabras; la distancia refleja similitud semántica. Haz clic en un punto para ver sus vecinos más cercanos." data-en="2D word embedding visualization. Dots represent words; distance reflects semantic similarity. Click a point to see its nearest neighbors.">Visualización 2D de word embeddings. Los puntos representan palabras; la distancia refleja similitud semántica. Haz clic en un punto para ver sus vecinos más cercanos.</p>
+                <p class="panel-desc" data-es="En mi trabajo en Cloud Levante utilizo embeddings, bases de datos vectoriales y LLMs para construir sistemas RAG. Esta visualización muestra cómo las palabras se agrupan por significado en un espacio vectorial — el mismo principio detrás de los motores de búsqueda semántica que desarrollo. Haz clic en un punto para ver sus vecinos." data-en="In my work at Cloud Levante I use embeddings, vector databases and LLMs to build RAG systems. This visualization shows how words cluster by meaning in vector space — the same principle behind the semantic search engines I develop. Click a point to see its neighbors.">En mi trabajo en Cloud Levante utilizo embeddings, bases de datos vectoriales y LLMs para construir sistemas RAG. Esta visualización muestra cómo las palabras se agrupan por significado en un espacio vectorial — el mismo principio detrás de los motores de búsqueda semántica que desarrollo. Haz clic en un punto para ver sus vecinos.</p>
                 <div class="embed-controls">
                     <input type="text" id="embedSearch" class="embed-search" placeholder="Search word..." data-es="Buscar palabra..." data-en="Search word...">
                     <div class="embed-legend" id="embedLegend"></div>
@@ -325,7 +326,7 @@
 
             <!-- Tab 3: Semantic Search -->
             <div class="lab-panel" id="panel-search">
-                <p class="panel-desc" data-es="Busca por significado en mis publicaciones y experiencia. El sistema calcula la similitud semántica (TF-IDF + coseno) entre tu consulta y mi trabajo." data-en="Search by meaning across my publications and experience. The system calculates semantic similarity (TF-IDF + cosine) between your query and my work.">Busca por significado en mis publicaciones y experiencia. El sistema calcula la similitud semántica (TF-IDF + coseno) entre tu consulta y mi trabajo.</p>
+                <p class="panel-desc" data-es="Motor de búsqueda semántica sobre mi trayectoria profesional. Utiliza TF-IDF y similitud coseno para encontrar las áreas de mi CV más relevantes a tu consulta — las mismas técnicas de Information Retrieval que aplico en mi investigación doctoral y en los sistemas cognitivos que construyo." data-en="Semantic search engine over my professional background. Uses TF-IDF and cosine similarity to find the most relevant areas of my CV for your query — the same Information Retrieval techniques I apply in my doctoral research and in the cognitive systems I build.">Motor de búsqueda semántica sobre mi trayectoria profesional. Utiliza TF-IDF y similitud coseno para encontrar las áreas de mi CV más relevantes a tu consulta — las mismas técnicas de Information Retrieval que aplico en mi investigación doctoral y en los sistemas cognitivos que construyo.</p>
                 <div class="search-input-area">
                     <input type="text" id="semanticInput" class="semantic-input" placeholder="e.g. clinical NLP, cloud security, transformers..." data-es="ej: NLP clínico, seguridad cloud, transformers..." data-en="e.g. clinical NLP, cloud security, transformers...">
                     <button id="semanticSearch" class="btn btn-primary nlp-btn" data-es="Buscar" data-en="Search">Buscar</button>
@@ -442,6 +443,10 @@
                 <a href="https://github.com/celiacl" target="_blank" class="contact-card">
                     <span class="contact-icon">💻</span>
                     <span>GitHub</span>
+                </a>
+                <a href="docs/cv_CeliaCabello.pdf" target="_blank" class="contact-card">
+                    <span class="contact-icon">📄</span>
+                    <span data-es="Descargar CV" data-en="Download CV">Descargar CV</span>
                 </a>
             </div>
         </div>
