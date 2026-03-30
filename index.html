@@ -6,7 +6,7 @@
     <title>Celia Cabello Collado | AI Engineer & Researcher</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Language Toggle -->
@@ -24,7 +24,9 @@
                 <a href="#about" data-es="Sobre mí" data-en="About">Sobre mí</a>
                 <a href="#experience" data-es="Experiencia" data-en="Experience">Experiencia</a>
                 <a href="#education" data-es="Educación" data-en="Education">Educación</a>
+                <a href="#talks" data-es="Charlas" data-en="Talks">Charlas</a>
                 <a href="#publications" data-es="Publicaciones" data-en="Publications">Publicaciones</a>
+                <a href="#nlp-lab" data-es="NLP Lab" data-en="NLP Lab">NLP Lab</a>
                 <a href="#skills" data-es="Habilidades" data-en="Skills">Habilidades</a>
                 <a href="#contact" data-es="Contacto" data-en="Contact">Contacto</a>
             </div>
@@ -44,10 +46,13 @@
         <div class="hero-content">
             <p class="hero-greeting" data-es="Hola, soy" data-en="Hi, I'm">Hola, soy</p>
             <h1 class="hero-name">Celia Cabello Collado</h1>
-            <h2 class="hero-title">AI Engineer | PhD Candidate | University Lecturer</h2>
+            <h2 class="hero-title">
+                <span id="typewriter"></span><span class="typewriter-cursor">|</span>
+            </h2>
             <p class="hero-desc" data-es="Ingeniera de IA, investigadora y docente. Enfoco la IA desde una perspectiva data-driven, combinando ciencia de datos, data engineering y NLP para construir soluciones eficientes y escalables." data-en="AI Engineer, researcher and lecturer. I approach AI from a data-driven perspective, combining data science, data engineering and NLP to build efficient and scalable solutions.">Ingeniera de IA, investigadora y docente. Enfoco la IA desde una perspectiva data-driven, combinando ciencia de datos, data engineering y NLP para construir soluciones eficientes y escalables.</p>
             <div class="hero-cta">
-                <a href="#publications" class="btn btn-primary" data-es="Publicaciones" data-en="Publications">Publicaciones</a>
+                <a href="#nlp-lab" class="btn btn-primary" data-es="Probar NLP Lab" data-en="Try NLP Lab">Probar NLP Lab</a>
+                <a href="#publications" class="btn btn-outline" data-es="Publicaciones" data-en="Publications">Publicaciones</a>
                 <a href="#contact" class="btn btn-outline" data-es="Contacto" data-en="Contact me">Contacto</a>
             </div>
         </div>
@@ -62,8 +67,8 @@
             <h2 class="section-title" data-es="Sobre mí" data-en="About me">Sobre mí</h2>
             <div class="about-grid">
                 <div class="about-image">
-                    <div class="about-image-placeholder">
-                        <span>🧠</span>
+                    <div class="about-photo-wrapper">
+                        <img src="img/profile.jpg" alt="Celia Cabello Collado" class="about-photo">
                     </div>
                 </div>
                 <div class="about-text">
@@ -174,8 +179,41 @@
         </div>
     </section>
 
+    <!-- Talks & Conferences Section -->
+    <section class="section section-alt" id="talks">
+        <div class="container">
+            <h2 class="section-title" data-es="Charlas & Formación" data-en="Talks & Training">Charlas & Formación</h2>
+            <div class="talks-grid">
+                <div class="talk-card">
+                    <div class="talk-type" data-es="Conferencia" data-en="Conference">Conferencia</div>
+                    <h3>ICISSP 2026</h3>
+                    <p class="talk-topic" data-es="Presentación de paper: Explainable Risk Translation Layer for Cloud Cybersecurity" data-en="Paper presentation: Explainable Risk Translation Layer for Cloud Cybersecurity">Presentación de paper: Explainable Risk Translation Layer for Cloud Cybersecurity</p>
+                    <span class="talk-meta">2026 · ICISSP International Conference</span>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type" data-es="Ponencia" data-en="Speaker">Ponencia</div>
+                    <h3 data-es="Cloud Europa — IA & Soberanía Digital" data-en="Cloud Europa — AI & Digital Sovereignty">Cloud Europa — IA & Soberanía Digital</h3>
+                    <p class="talk-topic" data-es="Visión práctica de cómo abordar proyectos de IA sobre infraestructura europea con IONOS Cloud. Trazabilidad, fiabilidad y soberanía digital." data-en="Practical vision on how to approach AI projects on European infrastructure with IONOS Cloud. Traceability, reliability and digital sovereignty.">Visión práctica de cómo abordar proyectos de IA sobre infraestructura europea con IONOS Cloud. Trazabilidad, fiabilidad y soberanía digital.</p>
+                    <span class="talk-meta">Abril 2026 · Parque Científico de Alicante</span>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type" data-es="Formación" data-en="Training">Formación</div>
+                    <h3 data-es="Formación en IA para empresas" data-en="AI Training for companies">Formación en IA para empresas</h3>
+                    <p class="talk-topic" data-es="Cursos y workshops sobre inteligencia artificial, NLP y ciencia de datos adaptados a necesidades empresariales." data-en="Courses and workshops on artificial intelligence, NLP and data science tailored to business needs.">Cursos y workshops sobre inteligencia artificial, NLP y ciencia de datos adaptados a necesidades empresariales.</p>
+                    <span class="talk-meta">Cloud Levante</span>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type" data-es="Docencia" data-en="Teaching">Docencia</div>
+                    <h3 data-es="Máster en Inteligencia Artificial" data-en="Master's in Artificial Intelligence">Máster en Inteligencia Artificial</h3>
+                    <p class="talk-topic" data-es="Profesora de Procesamiento del Lenguaje Natural y tutora de TFM en el Máster Oficial de IA." data-en="Professor of Natural Language Processing and Master's thesis tutor in the Official Master's in AI.">Profesora de Procesamiento del Lenguaje Natural y tutora de TFM en el Máster Oficial de IA.</p>
+                    <span class="talk-meta">2025 - <span data-es="Actualidad" data-en="Present">Actualidad</span> · UNIR</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Publications Section -->
-    <section class="section section-alt" id="publications">
+    <section class="section" id="publications">
         <div class="container">
             <h2 class="section-title" data-es="Publicaciones" data-en="Publications">Publicaciones</h2>
             <div class="projects-grid">
@@ -205,7 +243,7 @@
                             <span>Sensors MDPI 2024</span><span>NLP</span><span>Transformers</span><span>ASR</span>
                         </div>
                         <div class="project-links">
-                            <a href="http://rua.ua.es/dspace/handle/10045/136622" target="_blank" class="project-link" data-es="Ver publicación" data-en="View paper">Ver publicación ↗</a>
+                            <a href="https://doi.org/10.3390/s24092751" target="_blank" class="project-link" data-es="Ver publicación" data-en="View paper">Ver publicación ↗</a>
                         </div>
                     </div>
                 </div>
@@ -222,6 +260,50 @@
                         <div class="project-links">
                             <a href="#experience" class="project-link" data-es="En desarrollo" data-en="In progress">En desarrollo ↗</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NLP Lab Section -->
+    <section class="section section-alt" id="nlp-lab">
+        <div class="container">
+            <h2 class="section-title">NLP Lab</h2>
+            <p class="nlp-subtitle" data-es="Escribe cualquier texto y mira cómo lo procesa un pipeline de NLP en tiempo real" data-en="Type any text and watch how an NLP pipeline processes it in real time">Escribe cualquier texto y mira cómo lo procesa un pipeline de NLP en tiempo real</p>
+            <div class="nlp-playground">
+                <div class="nlp-input-area">
+                    <textarea id="nlpInput" rows="3" placeholder="Escribe algo aquí... / Type something here..." data-es="Escribe algo aquí..." data-en="Type something here..."></textarea>
+                    <div class="nlp-examples">
+                        <span data-es="Probar:" data-en="Try:">Probar:</span>
+                        <button class="nlp-example-btn" data-text="El nuevo modelo de IA de Google ha revolucionado el procesamiento del lenguaje natural con resultados increíbles.">Ejemplo 1</button>
+                        <button class="nlp-example-btn" data-text="The cybersecurity risks in cloud computing require explainable AI solutions for better decision-making.">Ejemplo 2</button>
+                        <button class="nlp-example-btn" data-text="Me encanta trabajar con datos, construir modelos de machine learning y enseñar NLP en la universidad.">Ejemplo 3</button>
+                    </div>
+                    <button id="nlpAnalyze" class="btn btn-primary nlp-btn" data-es="Analizar" data-en="Analyze">Analizar</button>
+                </div>
+                <div class="nlp-results" id="nlpResults">
+                    <div class="nlp-result-card" id="nlpTokens">
+                        <h4>Tokenization</h4>
+                        <div class="nlp-tokens-container" id="tokensContainer"></div>
+                    </div>
+                    <div class="nlp-result-card" id="nlpSentiment">
+                        <h4 data-es="Análisis de Sentimiento" data-en="Sentiment Analysis">Análisis de Sentimiento</h4>
+                        <div class="sentiment-display">
+                            <span class="sentiment-emoji" id="sentimentEmoji"></span>
+                            <div class="sentiment-bar-bg">
+                                <div class="sentiment-bar" id="sentimentBar"></div>
+                            </div>
+                            <span class="sentiment-label" id="sentimentLabel"></span>
+                        </div>
+                    </div>
+                    <div class="nlp-result-card" id="nlpEntities">
+                        <h4 data-es="Entidades Detectadas (NER)" data-en="Detected Entities (NER)">Entidades Detectadas (NER)</h4>
+                        <div class="ner-container" id="nerContainer"></div>
+                    </div>
+                    <div class="nlp-result-card" id="nlpStats">
+                        <h4 data-es="Estadísticas" data-en="Statistics">Estadísticas</h4>
+                        <div class="stats-grid" id="statsContainer"></div>
                     </div>
                 </div>
             </div>
