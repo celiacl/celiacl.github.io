@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celia CL | Data & AI Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Language Toggle -->
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+        <span class="lang-option active" data-lang="es">ES</span>
+        <span class="lang-divider">/</span>
+        <span class="lang-option" data-lang="en">EN</span>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">CCL</a>
+            <div class="nav-links">
+                <a href="#about" data-es="Sobre mí" data-en="About">Sobre mí</a>
+                <a href="#experience" data-es="Experiencia" data-en="Experience">Experiencia</a>
+                <a href="#education" data-es="Educación" data-en="Education">Educación</a>
+                <a href="#projects" data-es="Proyectos" data-en="Projects">Proyectos</a>
+                <a href="#skills" data-es="Habilidades" data-en="Skills">Habilidades</a>
+                <a href="#contact" data-es="Contacto" data-en="Contact">Contacto</a>
+            </div>
+            <button class="nav-menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+        </div>
+        <div class="hero-content">
+            <p class="hero-greeting" data-es="Hola, soy" data-en="Hi, I'm">Hola, soy</p>
+            <h1 class="hero-name">Celia CL</h1>
+            <h2 class="hero-title" data-es="Data Scientist & AI Enthusiast" data-en="Data Scientist & AI Enthusiast">Data Scientist & AI Enthusiast</h2>
+            <p class="hero-desc" data-es="Transformando datos en decisiones. Apasionada por la inteligencia artificial, el machine learning y la visualización de datos." data-en="Turning data into decisions. Passionate about artificial intelligence, machine learning, and data visualization.">Transformando datos en decisiones. Apasionada por la inteligencia artificial, el machine learning y la visualización de datos.</p>
+            <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary" data-es="Ver proyectos" data-en="View projects">Ver proyectos</a>
+                <a href="#contact" class="btn btn-outline" data-es="Contacto" data-en="Contact me">Contacto</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title" data-es="Sobre mí" data-en="About me">Sobre mí</h2>
+            <div class="about-grid">
+                <div class="about-image">
+                    <div class="about-image-placeholder">
+                        <span>📊</span>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p data-es="Soy una profesional apasionada por los datos y la inteligencia artificial. Me encanta descubrir patrones ocultos en los datos y construir modelos que generen impacto real." data-en="I'm a professional passionate about data and artificial intelligence. I love discovering hidden patterns in data and building models that generate real impact.">Soy una profesional apasionada por los datos y la inteligencia artificial. Me encanta descubrir patrones ocultos en los datos y construir modelos que generen impacto real.</p>
+                    <p data-es="Con experiencia en análisis de datos, machine learning y visualización, busco siempre soluciones creativas a problemas complejos." data-en="With experience in data analysis, machine learning, and visualization, I always seek creative solutions to complex problems.">Con experiencia en análisis de datos, machine learning y visualización, busco siempre soluciones creativas a problemas complejos.</p>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <span class="stat-number">X+</span>
+                            <span class="stat-label" data-es="Proyectos" data-en="Projects">Proyectos</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">X+</span>
+                            <span class="stat-label" data-es="Años exp." data-en="Years exp.">Años exp.</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">X+</span>
+                            <span class="stat-label" data-es="Tecnologías" data-en="Technologies">Tecnologías</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="section section-alt" id="experience">
+        <div class="container">
+            <h2 class="section-title" data-es="Experiencia" data-en="Experience">Experiencia</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <span class="timeline-date">2024 - <span data-es="Presente" data-en="Present">Presente</span></span>
+                        <h3 data-es="Data Scientist" data-en="Data Scientist">Data Scientist</h3>
+                        <h4 data-es="Empresa / Company" data-en="Company">Empresa / Company</h4>
+                        <p data-es="Descripción del rol y logros principales. Modelos de ML, análisis predictivo, etc." data-en="Role description and main achievements. ML models, predictive analysis, etc.">Descripción del rol y logros principales. Modelos de ML, análisis predictivo, etc.</p>
+                        <div class="timeline-tags">
+                            <span>Python</span><span>TensorFlow</span><span>SQL</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <span class="timeline-date">2022 - 2024</span>
+                        <h3 data-es="Data Analyst" data-en="Data Analyst">Data Analyst</h3>
+                        <h4 data-es="Empresa / Company" data-en="Company">Empresa / Company</h4>
+                        <p data-es="Descripción del rol y logros principales. Dashboards, reportes, insights de negocio." data-en="Role description and main achievements. Dashboards, reports, business insights.">Descripción del rol y logros principales. Dashboards, reportes, insights de negocio.</p>
+                        <div class="timeline-tags">
+                            <span>Power BI</span><span>Python</span><span>Excel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="section" id="education">
+        <div class="container">
+            <h2 class="section-title" data-es="Educación" data-en="Education">Educación</h2>
+            <div class="education-grid">
+                <div class="edu-card">
+                    <div class="edu-icon">🎓</div>
+                    <span class="edu-date">2020 - 2024</span>
+                    <h3 data-es="Grado en Ciencia de Datos" data-en="Degree in Data Science">Grado en Ciencia de Datos</h3>
+                    <h4 data-es="Universidad" data-en="University">Universidad</h4>
+                </div>
+                <div class="edu-card">
+                    <div class="edu-icon">📜</div>
+                    <span class="edu-date">2023</span>
+                    <h3 data-es="Certificación en Machine Learning" data-en="Machine Learning Certification">Certificación en Machine Learning</h3>
+                    <h4 data-es="Plataforma / Institución" data-en="Platform / Institution">Plataforma / Institución</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section section-alt" id="projects">
+        <div class="container">
+            <h2 class="section-title" data-es="Proyectos" data-en="Projects">Proyectos</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <span class="project-emoji">🤖</span>
+                    </div>
+                    <div class="project-info">
+                        <h3 data-es="Predicción con ML" data-en="ML Prediction">Predicción con ML</h3>
+                        <p data-es="Modelo de machine learning para predicción de [tema]. Accuracy del X%." data-en="Machine learning model for [topic] prediction. X% accuracy.">Modelo de machine learning para predicción de [tema]. Accuracy del X%.</p>
+                        <div class="project-tags">
+                            <span>Python</span><span>Scikit-learn</span><span>Pandas</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link" data-es="Ver código" data-en="View code">Ver código ↗</a>
+                            <a href="#" class="project-link" data-es="Demo" data-en="Demo">Demo ↗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <span class="project-emoji">📊</span>
+                    </div>
+                    <div class="project-info">
+                        <h3 data-es="Dashboard Interactivo" data-en="Interactive Dashboard">Dashboard Interactivo</h3>
+                        <p data-es="Visualización interactiva de datos sobre [tema] usando herramientas modernas." data-en="Interactive data visualization about [topic] using modern tools.">Visualización interactiva de datos sobre [tema] usando herramientas modernas.</p>
+                        <div class="project-tags">
+                            <span>Tableau</span><span>D3.js</span><span>SQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link" data-es="Ver código" data-en="View code">Ver código ↗</a>
+                            <a href="#" class="project-link" data-es="Demo" data-en="Demo">Demo ↗</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                        <span class="project-emoji">🧠</span>
+                    </div>
+                    <div class="project-info">
+                        <h3 data-es="NLP & Análisis de Texto" data-en="NLP & Text Analysis">NLP & Análisis de Texto</h3>
+                        <p data-es="Procesamiento de lenguaje natural para análisis de sentimiento en [dominio]." data-en="Natural language processing for sentiment analysis in [domain].">Procesamiento de lenguaje natural para análisis de sentimiento en [dominio].</p>
+                        <div class="project-tags">
+                            <span>NLTK</span><span>Transformers</span><span>Python</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link" data-es="Ver código" data-en="View code">Ver código ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section" id="skills">
+        <div class="container">
+            <h2 class="section-title" data-es="Habilidades" data-en="Skills">Habilidades</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 data-es="Lenguajes" data-en="Languages">Lenguajes</h3>
+                    <div class="skill-items">
+                        <div class="skill-chip">Python</div>
+                        <div class="skill-chip">R</div>
+                        <div class="skill-chip">SQL</div>
+                        <div class="skill-chip">JavaScript</div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-es="ML & AI" data-en="ML & AI">ML & AI</h3>
+                    <div class="skill-items">
+                        <div class="skill-chip">TensorFlow</div>
+                        <div class="skill-chip">PyTorch</div>
+                        <div class="skill-chip">Scikit-learn</div>
+                        <div class="skill-chip">Keras</div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-es="Datos & Viz" data-en="Data & Viz">Datos & Viz</h3>
+                    <div class="skill-items">
+                        <div class="skill-chip">Pandas</div>
+                        <div class="skill-chip">NumPy</div>
+                        <div class="skill-chip">Matplotlib</div>
+                        <div class="skill-chip">Power BI</div>
+                        <div class="skill-chip">Tableau</div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-es="Herramientas" data-en="Tools">Herramientas</h3>
+                    <div class="skill-items">
+                        <div class="skill-chip">Git</div>
+                        <div class="skill-chip">Docker</div>
+                        <div class="skill-chip">AWS</div>
+                        <div class="skill-chip">Jupyter</div>
+                        <div class="skill-chip">Spark</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section section-alt" id="contact">
+        <div class="container">
+            <h2 class="section-title" data-es="Contacto" data-en="Contact">Contacto</h2>
+            <p class="contact-subtitle" data-es="¿Tienes un proyecto en mente? ¡Hablemos!" data-en="Have a project in mind? Let's talk!">¿Tienes un proyecto en mente? ¡Hablemos!</p>
+            <div class="contact-grid">
+                <a href="mailto:tu@email.com" class="contact-card">
+                    <span class="contact-icon">✉️</span>
+                    <span>tu@email.com</span>
+                </a>
+                <a href="https://linkedin.com/in/tu-perfil" target="_blank" class="contact-card">
+                    <span class="contact-icon">💼</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/tu-usuario" target="_blank" class="contact-card">
+                    <span class="contact-icon">💻</span>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 Celia CL. <span data-es="Hecho con 💜 y muchos datos" data-en="Made with 💜 and lots of data">Hecho con 💜 y muchos datos</span></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
