@@ -1194,6 +1194,31 @@ a {
     font-size: 0.95rem;
 }
 
+/* ===== LinkedIn Embeds ===== */
+.linkedin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+.linkedin-embed {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--dark-3);
+}
+
+.linkedin-embed iframe {
+    display: block;
+    border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+    .linkedin-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ===== Skills ===== */
 .skills-grid {
     display: grid;
