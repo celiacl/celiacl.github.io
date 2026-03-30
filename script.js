@@ -1,3 +1,51 @@
+// ===== Animated Hero Grid =====
+(function() {
+    const c = document.getElementById('heroGrid');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    let w, h, cols, rows, mx = -1, my = -1;
+    const gap = 40;
+
+    function resize() {
+        w = c.width = c.parentElement.offsetWidth;
+        h = c.height = c.parentElement.offsetHeight;
+        cols = Math.ceil(w / gap) + 1;
+        rows = Math.ceil(h / gap) + 1;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    document.querySelector('.hero').addEventListener('mousemove', e => {
+        const r = c.getBoundingClientRect();
+        mx = e.clientX - r.left;
+        my = e.clientY - r.top;
+    });
+    document.querySelector('.hero').addEventListener('mouseleave', () => { mx = -1; my = -1; });
+
+    function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < rows; j++) {
+                const x = i * gap, y = j * gap;
+                let dist = mx >= 0 ? Math.hypot(x - mx, y - my) : 999;
+                let alpha = Math.max(0.04, 0.35 - dist / 350);
+                let size = dist < 200 ? 2 + (1 - dist / 200) * 2.5 : 2;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                if (dist < 160) {
+                    const hue = 270 + (dist / 160) * 60;
+                    ctx.fillStyle = `hsla(${hue}, 80%, 70%, ${alpha})`;
+                } else {
+                    ctx.fillStyle = `rgba(148, 163, 184, ${alpha})`;
+                }
+                ctx.fill();
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
 // ===== Typewriter Effect =====
 const typewriterEl = document.getElementById('typewriter');
 const roles = ['AI Engineer', 'PhD Candidate', 'NLP Specialist', 'University Lecturer', 'Data Scientist', 'Researcher'];
@@ -41,6 +89,26 @@ navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => na
 const sections = document.querySelectorAll('.section');
 const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
 sections.forEach(s => obs.observe(s));
+
+// Staggered card animations on scroll
+const cardObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            const cards = e.target.querySelectorAll('.timeline-card, .edu-card, .talk-card, .project-card, .skill-category, .stat-card');
+            cards.forEach((card, i) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(24px)';
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, i * 100);
+            });
+            cardObs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.05 });
+sections.forEach(s => cardObs.observe(s));
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => { const t = document.querySelector(a.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); } });
@@ -211,7 +279,7 @@ function initEmbeddings() {
 
     function resize() {
         const rect = wrap.getBoundingClientRect();
-        canvasW = rect.width;
+        canvasW = rect.width || 800;
         canvasH = 500;
         canvas.width = canvasW * devicePixelRatio;
         canvas.height = canvasH * devicePixelRatio;
@@ -220,7 +288,8 @@ function initEmbeddings() {
         draw();
     }
 
-    resize();
+    // Small delay to ensure panel is rendered and has dimensions
+    requestAnimationFrame(() => { resize(); });
     window.addEventListener('resize', resize);
 
     // Legend
@@ -318,11 +387,21 @@ function draw() {
         const label = `${hoveredPoint.word}  [${cluster}]`;
         ctx.font = '500 12px "Inter", sans-serif';
         const tw = ctx.measureText(label).width + 16;
-        const tx = Math.min(px - tw / 2, canvasW - tw - 8);
+        const tx = Math.min(Math.max(px - tw / 2, 4), canvasW - tw - 4);
         const ty = py + 20;
-        ctx.fillStyle = 'rgba(15,15,26,0.9)';
+        const th = 28, tr = 8;
         ctx.beginPath();
-        ctx.roundRect(tx, ty, tw, 28, 8);
+        ctx.moveTo(tx + tr, ty);
+        ctx.lineTo(tx + tw - tr, ty);
+        ctx.quadraticCurveTo(tx + tw, ty, tx + tw, ty + tr);
+        ctx.lineTo(tx + tw, ty + th - tr);
+        ctx.quadraticCurveTo(tx + tw, ty + th, tx + tw - tr, ty + th);
+        ctx.lineTo(tx + tr, ty + th);
+        ctx.quadraticCurveTo(tx, ty + th, tx, ty + th - tr);
+        ctx.lineTo(tx, ty + tr);
+        ctx.quadraticCurveTo(tx, ty, tx + tr, ty);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(15,15,26,0.9)';
         ctx.fill();
         ctx.strokeStyle = hoveredPoint.color;
         ctx.lineWidth = 1;
