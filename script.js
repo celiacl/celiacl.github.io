@@ -809,7 +809,11 @@ document.querySelectorAll('.hero-cta .btn').forEach(btn => {
         clicks++;
         clearTimeout(timer);
         timer = setTimeout(() => { clicks = 0; }, 600);
-        if (clicks >= 3) { clicks = 0; openTerminal(); }
+        if (clicks >= 3) {
+            clicks = 0;
+            logo.classList.add('egg-found');
+            openTerminal();
+        }
     });
 
     function openTerminal() {
